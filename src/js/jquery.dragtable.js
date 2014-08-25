@@ -274,11 +274,14 @@
 					'array':[]
 				},
 				//cache regex, reduces looking up the chain
-				tbodyRegex = this.tbodyRegex,
 				theadRegex = this.theadRegex,
+				tbodyRegex = this.tbodyRegex,
+				tfootRegex = this.tfootRegex,
+
 				//reduce looking up the chain, dont do it for the foot think thats more overhead since not many tables have a tfoot
+				tdsSemanticHead = tds.semantic[ei.head],
 				tdsSemanticBody = tds.semantic[ei.body],
-				tdsSemanticHead = tds.semantic[ei.head];
+				tdsSemanticFoot = tds.semantic[ei.foot];
 			
 			//console.log(index);
 			//check does this col exsist
@@ -308,13 +311,13 @@
 				
 				}else if( this.tfootRegex.test( parentNodeName ) ){
 					
-					tds.semantic[ei.foot].push( td );
+					tdsSemanticFoot.push( td );
 				}
 				
 					 		
-		 	}
-		 	//console.timeEnd('getcells');
-		 	return tds;
+			}
+
+			return tds;
 		},
 		/*
 		 * returns all element attrs in a string key="value" key2="value"
@@ -399,10 +402,13 @@
                     var target = document.createElement('thead');
 						self.dragDisplay[0].appendChild(target);
 
-                }else{ 
+                }else if ( k == 1 ) { 
                     var target = document.createElement('tbody');
 						self.dragDisplay[0].appendChild(target);
 
+                }else {
+                	var target = document.createElement('tfoot');
+						self.dragDisplay[0].appendChild(target);
                 }
 
 				for(var i = 0,length = collection.length; i < length; i++){
