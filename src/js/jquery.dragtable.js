@@ -124,7 +124,7 @@
                 //############
             });
 
-},
+        },
 
         /*
          * e.currentTarget is used for figuring out offsetLeft
@@ -214,15 +214,15 @@
                 prevMouseX = e.pageX;
                 
             })
-.one( 'mouseup.' + self.widgetEventPrefix ,function(e ){
-    self._stop( e );
-});
+            .one( 'mouseup.' + self.widgetEventPrefix ,function(e ){
+                self._stop( e );
+            });
 
-},
+            },
 
-_start: function( e ){
-    
-    $( document )
+            _start: function( e ){
+                
+                $( document )
                     //move disableselection and cursor to default handlers of the start event
                     .disableSelection()
                     .css( 'cursor', 'move')
@@ -365,27 +365,33 @@ _start: function( e ){
          * TODO: name this something better, like select col or get dragDisplay
          * 
          */     
-         getCol: function(index){
+        getCol: function(index){
             //console.log('index of col '+index);
             //drag display is just simple html
             //console.profile('selectCol');
             
             //colHeader.addClass('ui-state-disabled')
 
-            var $table = this.element,
-            self = this,
-            eIndex = self.tableElemIndex,
-            placholderClassnames = ' ' + this.options.placeholder;
+            var target, 
+                cells,
+                clone,
+                tr,
+                i,
+                length,
+                $table = this.element,
+                self = this,
+                eIndex = self.tableElemIndex,
+                placholderClassnames = ' ' + this.options.placeholder;;
             
                 //BUG: IE thinks that this table is disabled, dont know how that happend
-                self.dragDisplay = $('<table '+self._getElementAttributes($table[0])+'></table>')
+            self.dragDisplay = $('<table '+self._getElementAttributes($table[0])+'></table>')
                 .addClass('dragtable-drag-col');
                 
             //start and end are the same to start out with
             self.startIndex = self.endIndex = index;
             
 
-            var cells = self._getCells($table[0], index);
+            cells = self._getCells($table[0], index);
             self.currentColumnCollection = cells.array;
             //console.log(cells);
             //################################
@@ -399,44 +405,42 @@ _start: function( e ){
                 }
                 
                 if ( k == '0' ){
-                    var target = document.createElement('thead');
+                    target = document.createElement('thead');
                     self.dragDisplay[0].appendChild(target);
 
                 }else if ( k == 1 ) { 
-                    var target = document.createElement('tbody');
+                    target = document.createElement('tbody');
                     self.dragDisplay[0].appendChild(target);
 
                 }else {
-                    var target = document.createElement('tfoot');
+                    target = document.createElement('tfoot');
                     self.dragDisplay[0].appendChild(target);
                 }
 
-                for(var i = 0,length = collection.length; i < length; i++){
+                for(i = 0,length = collection.length; i < length; i++){
                     
-                    var clone = collection[i].cloneNode(true);
+                    clone = collection[i].cloneNode(true);
                     collection[i].className+=placholderClassnames;
-                    var tr = document.createElement('tr');
+                    tr = document.createElement('tr');
                     tr.appendChild(clone);
-                    //console.log(tr);
-                    
-                    
+
                     target.appendChild(tr);
-                    //collection[i]=;
+                    
                 }
             });
 
 
-this._setCurrentColumnCollectionOffset();
+            this._setCurrentColumnCollectionOffset();
 
 
-self.dragDisplay  = $('<div class="dragtable-drag-wrapper"></div>').append(self.dragDisplay)
-return self.dragDisplay;
-},
+            self.dragDisplay  = $('<div class="dragtable-drag-wrapper"></div>').append(self.dragDisplay)
+            return self.dragDisplay;
+        },
 
 
-_setCurrentColumnCollectionOffset: function(){
-    return this.currentColumnCollectionOffset = $( this.currentColumnCollection[0] ).position();
-},
+        _setCurrentColumnCollectionOffset: function(){
+            return this.currentColumnCollectionOffset = $( this.currentColumnCollection[0] ).position();
+        },
 
         /*
          * move column left or right
