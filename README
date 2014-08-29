@@ -1,9 +1,9 @@
-#Dragtable a jQuery Widget to re-order table columns via drag and drop
+# Dragtable a jQuery Widget to re-order table columns via drag and drop
 
 Project home page: http://jebaird.com/blog/dragtable-jquery-ui-widget-re-arrange-table-columns-drag-drop
 
 
-#Getting started development
+# Getting started development
 
 dragtable uses funcunit for functional testing so you will need to do the following. These steps aren't necessary if you just want to use the widget.
 
