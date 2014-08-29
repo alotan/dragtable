@@ -261,7 +261,9 @@
          */
          _getCells: function( elem, index ){
             //console.time('getcells');
-            var ei = this.tableElemIndex,
+            var td,
+                parentNodeName,
+                ei = this.tableElemIndex,
                 //TODO: clean up this format 
                 tds = {
                     //store where the cells came from
@@ -291,14 +293,14 @@
             
             for(var i = 0, length = elem.rows.length; i < length; i++){
                 
-                var td = elem.rows[i].cells[index];
+                td = elem.rows[i].cells[index];
                 
                 //if the row has no cells dont error out;
                 if( td == undefined ){
                     continue;
                 }
                 
-                var parentNodeName = td.parentNode.parentNode.nodeName;
+                parentNodeName = td.parentNode.parentNode.nodeName;
                 tds.array.push(td);
                 //faster to leave out ^ and $ in the regular expression
                 if( tbodyRegex.test( parentNodeName ) ){
@@ -393,7 +395,8 @@
 
             cells = self._getCells($table[0], index);
             self.currentColumnCollection = cells.array;
-            //console.log(cells);
+            
+            console.log(cells);
             //################################
             
             //TODO: convert to for in // its faster than each
