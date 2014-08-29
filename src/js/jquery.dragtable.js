@@ -108,15 +108,15 @@
                 
                 
                 self.getCol( $handle.index() )
-                .attr( 'tabindex', -1 )
-                .focus()
-                .disableSelection()
-                .css({
-                    top: elementOffsetTop,
-                        //need to account for the scroll left of the append target, other wise the display will be off by that many pix
-                        left: ( self.currentColumnCollectionOffset.left + o.appendTarget[0].scrollLeft )
-                    })
-                .appendTo( o.appendTarget )
+                    .attr( 'tabindex', -1 )
+                    .focus()
+                    .disableSelection()
+                    .css({
+                        top: elementOffsetTop,
+                            //need to account for the scroll left of the append target, other wise the display will be off by that many pix
+                            left: ( self.currentColumnCollectionOffset.left + o.appendTarget[0].scrollLeft )
+                        })
+                    .appendTo( o.appendTarget )
                 
 
                 
@@ -136,18 +136,18 @@
             this._start( e )
             
             var self = this,
-            o = self.options,
-            prevMouseX = e.pageX,
-            dragDisplayWidth = self.dragDisplay.outerWidth(),
-            halfDragDisplayWidth = dragDisplayWidth / 2,
-            appendTargetOP = o.appendTarget.offsetParent()[0],
-            scroll = o.scroll,
+                o = self.options,
+                prevMouseX = e.pageX,
+                dragDisplayWidth = self.dragDisplay.outerWidth(),
+                halfDragDisplayWidth = dragDisplayWidth / 2,
+                appendTargetOP = o.appendTarget.offsetParent()[0],
+                scroll = o.scroll,
                 //get the col count, used to contain col swap
                 colCount = self.element[ 0 ]
-                .getElementsByTagName( 'thead' )[ 0 ]
-                .getElementsByTagName( 'tr' )[ 0 ]
-                .getElementsByTagName( 'th' )
-                .length - 1;
+                    .getElementsByTagName( 'thead' )[ 0 ]
+                    .getElementsByTagName( 'tr' )[ 0 ]
+                    .getElementsByTagName( 'th' )
+                    .length - 1;
 
                 $( document ).bind('mousemove.' + self.widgetEventPrefix, function( e ){
                     var columnPos = self._setCurrentColumnCollectionOffset(),
@@ -280,7 +280,7 @@
                 tbodyRegex = this.tbodyRegex,
                 tfootRegex = this.tfootRegex,
 
-                //reduce looking up the chain, dont do it for the foot think thats more overhead since not many tables have a tfoot
+                
                 tdsSemanticHead = tds.semantic[ei.head],
                 tdsSemanticBody = tds.semantic[ei.body],
                 tdsSemanticFoot = tds.semantic[ei.foot];
@@ -396,7 +396,6 @@
             cells = self._getCells($table[0], index);
             self.currentColumnCollection = cells.array;
             
-            console.log(cells);
             //################################
             
             //TODO: convert to for in // its faster than each
