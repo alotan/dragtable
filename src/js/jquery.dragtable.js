@@ -108,15 +108,15 @@
                 
                 
                 self.getCol( $handle.index() )
-                .attr( 'tabindex', -1 )
-                .focus()
-                .disableSelection()
-                .css({
-                    top: elementOffsetTop,
-                        //need to account for the scroll left of the append target, other wise the display will be off by that many pix
-                        left: ( self.currentColumnCollectionOffset.left + o.appendTarget[0].scrollLeft )
-                    })
-                .appendTo( o.appendTarget )
+                    .attr( 'tabindex', -1 )
+                    .focus()
+                    .disableSelection()
+                    .css({
+                        top: elementOffsetTop,
+                            //need to account for the scroll left of the append target, other wise the display will be off by that many pix
+                            left: ( self.currentColumnCollectionOffset.left + o.appendTarget[0].scrollLeft )
+                        })
+                    .appendTo( o.appendTarget )
                 
 
                 
@@ -124,7 +124,7 @@
                 //############
             });
 
-},
+        },
 
         /*
          * e.currentTarget is used for figuring out offsetLeft
@@ -136,18 +136,18 @@
             this._start( e )
             
             var self = this,
-            o = self.options,
-            prevMouseX = e.pageX,
-            dragDisplayWidth = self.dragDisplay.outerWidth(),
-            halfDragDisplayWidth = dragDisplayWidth / 2,
-            appendTargetOP = o.appendTarget.offsetParent()[0],
-            scroll = o.scroll,
+                o = self.options,
+                prevMouseX = e.pageX,
+                dragDisplayWidth = self.dragDisplay.outerWidth(),
+                halfDragDisplayWidth = dragDisplayWidth / 2,
+                appendTargetOP = o.appendTarget.offsetParent()[0],
+                scroll = o.scroll,
                 //get the col count, used to contain col swap
                 colCount = self.element[ 0 ]
-                .getElementsByTagName( 'thead' )[ 0 ]
-                .getElementsByTagName( 'tr' )[ 0 ]
-                .getElementsByTagName( 'th' )
-                .length - 1;
+                    .getElementsByTagName( 'thead' )[ 0 ]
+                    .getElementsByTagName( 'tr' )[ 0 ]
+                    .getElementsByTagName( 'th' )
+                    .length - 1;
 
                 $( document ).bind('mousemove.' + self.widgetEventPrefix, function( e ){
                     var columnPos = self._setCurrentColumnCollectionOffset(),
@@ -214,24 +214,24 @@
                 prevMouseX = e.pageX;
                 
             })
-.one( 'mouseup.' + self.widgetEventPrefix ,function(e ){
-    self._stop( e );
-});
+            .one( 'mouseup.' + self.widgetEventPrefix ,function(e ){
+                self._stop( e );
+            });
 
-},
+            },
 
-_start: function( e ){
-    
-    $( document )
+            _start: function( e ){
+                
+                $( document )
                     //move disableselection and cursor to default handlers of the start event
                     .disableSelection()
-                    .css( 'cursor', 'move')
+                    .css( 'cursor', 'move');
 
-                    
-                    return this._eventHelper('start',e,{
-                    //'draggable': $dragDisplay
-                });
-                    
+                    // guess the width of the column that is getting dragged and apply it to the drag display. fixes issues with
+                    // cols / tables having fixed widths
+                    this.dragDisplay.width( this.currentColumnCollection[0].clientWidth )
+
+                    return this._eventHelper('start',e);
                     
                 },
                 _stop: function( e ){
@@ -261,7 +261,9 @@ _start: function( e ){
          */
          _getCells: function( elem, index ){
             //console.time('getcells');
-            var ei = this.tableElemIndex,
+            var td,
+                parentNodeName,
+                ei = this.tableElemIndex,
                 //TODO: clean up this format 
                 tds = {
                     //store where the cells came from
@@ -278,7 +280,7 @@ _start: function( e ){
                 tbodyRegex = this.tbodyRegex,
                 tfootRegex = this.tfootRegex,
 
-                //reduce looking up the chain, dont do it for the foot think thats more overhead since not many tables have a tfoot
+                
                 tdsSemanticHead = tds.semantic[ei.head],
                 tdsSemanticBody = tds.semantic[ei.body],
                 tdsSemanticFoot = tds.semantic[ei.foot];
@@ -291,14 +293,14 @@ _start: function( e ){
             
             for(var i = 0, length = elem.rows.length; i < length; i++){
                 
-                var td = elem.rows[i].cells[index];
+                td = elem.rows[i].cells[index];
                 
                 //if the row has no cells dont error out;
                 if( td == undefined ){
                     continue;
                 }
                 
-                var parentNodeName = td.parentNode.parentNode.nodeName;
+                parentNodeName = td.parentNode.parentNode.nodeName;
                 tds.array.push(td);
                 //faster to leave out ^ and $ in the regular expression
                 if( tbodyRegex.test( parentNodeName ) ){
@@ -365,29 +367,35 @@ _start: function( e ){
          * TODO: name this something better, like select col or get dragDisplay
          * 
          */     
-         getCol: function(index){
+        getCol: function(index){
             //console.log('index of col '+index);
             //drag display is just simple html
             //console.profile('selectCol');
             
             //colHeader.addClass('ui-state-disabled')
 
-            var $table = this.element,
-            self = this,
-            eIndex = self.tableElemIndex,
-            placholderClassnames = ' ' + this.options.placeholder;
+            var target, 
+                cells,
+                clone,
+                tr,
+                i,
+                length,
+                $table = this.element,
+                self = this,
+                eIndex = self.tableElemIndex,
+                placholderClassnames = ' ' + this.options.placeholder;;
             
                 //BUG: IE thinks that this table is disabled, dont know how that happend
-                self.dragDisplay = $('<table '+self._getElementAttributes($table[0])+'></table>')
+            self.dragDisplay = $('<table '+self._getElementAttributes($table[0])+'></table>')
                 .addClass('dragtable-drag-col');
                 
             //start and end are the same to start out with
             self.startIndex = self.endIndex = index;
             
 
-            var cells = self._getCells($table[0], index);
+            cells = self._getCells($table[0], index);
             self.currentColumnCollection = cells.array;
-            //console.log(cells);
+            
             //################################
             
             //TODO: convert to for in // its faster than each
@@ -399,44 +407,42 @@ _start: function( e ){
                 }
                 
                 if ( k == '0' ){
-                    var target = document.createElement('thead');
+                    target = document.createElement('thead');
                     self.dragDisplay[0].appendChild(target);
 
                 }else if ( k == 1 ) { 
-                    var target = document.createElement('tbody');
+                    target = document.createElement('tbody');
                     self.dragDisplay[0].appendChild(target);
 
                 }else {
-                    var target = document.createElement('tfoot');
+                    target = document.createElement('tfoot');
                     self.dragDisplay[0].appendChild(target);
                 }
 
-                for(var i = 0,length = collection.length; i < length; i++){
+                for(i = 0,length = collection.length; i < length; i++){
                     
-                    var clone = collection[i].cloneNode(true);
+                    clone = collection[i].cloneNode(true);
                     collection[i].className+=placholderClassnames;
-                    var tr = document.createElement('tr');
+                    tr = document.createElement('tr');
                     tr.appendChild(clone);
-                    //console.log(tr);
-                    
-                    
+
                     target.appendChild(tr);
-                    //collection[i]=;
+                    
                 }
             });
 
 
-this._setCurrentColumnCollectionOffset();
+            this._setCurrentColumnCollectionOffset();
 
 
-self.dragDisplay  = $('<div class="dragtable-drag-wrapper"></div>').append(self.dragDisplay)
-return self.dragDisplay;
-},
+            self.dragDisplay  = $('<div class="dragtable-drag-wrapper"></div>').append(self.dragDisplay)
+            return self.dragDisplay;
+        },
 
 
-_setCurrentColumnCollectionOffset: function(){
-    return this.currentColumnCollectionOffset = $( this.currentColumnCollection[0] ).position();
-},
+        _setCurrentColumnCollectionOffset: function(){
+            return this.currentColumnCollectionOffset = $( this.currentColumnCollection[0] ).position();
+        },
 
         /*
          * move column left or right
@@ -534,14 +540,14 @@ _setCurrentColumnCollectionOffset: function(){
                 //set
                 //headers and order have to match up
                 if(order.length != headers.length){
-                    //console.log('length not the same')
+                    
                     return self;
                 }
                 for(var i = 0, length = order.length; i < length; i++){
                    
                    var start = headers.filter('['+ options.dataHeader +'='+ order[i] +']').index();
                    if(start != -1){
-                        //console.log('start index '+start+' - swap to '+i);
+                        
                         self.startIndex = start;
                         
                         self.currentColumnCollection = self._getCells(self.element[0], start).array;
