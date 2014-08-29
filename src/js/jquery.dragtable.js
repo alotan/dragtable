@@ -225,13 +225,13 @@
                 $( document )
                     //move disableselection and cursor to default handlers of the start event
                     .disableSelection()
-                    .css( 'cursor', 'move')
+                    .css( 'cursor', 'move');
 
-                    
-                    return this._eventHelper('start',e,{
-                    //'draggable': $dragDisplay
-                });
-                    
+                    // guess the width of the column that is getting dragged and apply it to the drag display. fixes issues with
+                    // cols / tables having fixed widths
+                    this.dragDisplay.width( this.currentColumnCollection[0].clientWidth )
+
+                    return this._eventHelper('start',e);
                     
                 },
                 _stop: function( e ){
@@ -541,14 +541,14 @@
                 //set
                 //headers and order have to match up
                 if(order.length != headers.length){
-                    //console.log('length not the same')
+                    
                     return self;
                 }
                 for(var i = 0, length = order.length; i < length; i++){
                    
                    var start = headers.filter('['+ options.dataHeader +'='+ order[i] +']').index();
                    if(start != -1){
-                        //console.log('start index '+start+' - swap to '+i);
+                        
                         self.startIndex = start;
                         
                         self.currentColumnCollection = self._getCells(self.element[0], start).array;
