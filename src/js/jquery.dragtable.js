@@ -331,12 +331,15 @@
          */
          _getElementAttributes: function(element){
             
-            var attrsString = '',
-            attrs = element.attributes;
-            for(var i=0, length = attrs.length; i < length; i++) {
-                attrsString += attrs[i].nodeName + '="' + attrs[i].nodeValue+'"';
+            var attrsString = [],
+                attrs = element.attributes;
+                i = 0,
+                length = attrs.length;
+
+            for( ; i < length; i++) {
+                attrsString.push( attrs[i].nodeName + '="' + attrs[i].value+'"' );
             }
-            return attrsString;
+            return attrsString.join(' ');
         },
 
         /*
