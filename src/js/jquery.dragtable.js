@@ -378,10 +378,7 @@
         getCol: function(index){
             //console.log('index of col '+index);
             //drag display is just simple html
-            //console.profile('selectCol');
             
-            //colHeader.addClass('ui-state-disabled')
-
             var target, 
                 cells,
                 clone,
@@ -523,9 +520,9 @@
          */
          order: function(order){
             var self = this,
-            elem = self.element,
-            options = self.options,
-            headers = elem.find('thead tr:first').children('th');
+                elem = self.element,
+                options = self.options,
+                headers = elem.find('thead tr:first').children('th');
             
             
             if(order == undefined){
@@ -571,7 +568,7 @@
         
         destroy: function() {
             var self = this,
-            o = self.options;
+                o = self.options;
             
             this.element.undelegate( o.items, 'mousedown.' + self.widgetEventPrefix );
             
