@@ -54,8 +54,14 @@
             boundary: 'dragtable-drag-boundary',
             //classnames that get applied to the real td, th
             placeholder: 'dragtable-col-placeholder',
-            //the drag display will be appended to this element, some reason this is blank, also if your body tag has been zeroed off it wont be exact
-            appendTarget: $(  document.body ),
+            
+            /*
+                the drag display will be appended to this element, 
+                if this is set to  document.body and has been zeroed off the display will seem to jump
+
+                Its either : parent or a dom node
+            */
+            appendTarget: ':parent',
             //if true,this will scroll the appendTarget offsetParent when the dragDisplay is dragged past its boundaries
             scroll: false
             
@@ -85,18 +91,17 @@
 
             
             var self = this,
-            o = self.options,
-            el = self.element;
+                o = self.options,
+                el = self.element;
             
-            //offsetappendTarget catch for this
-            if( o.appendTarget.length == 0 ){
-                o.appendTarget = $( document.body );
-            }
+            o.appendTarget = ( o.appendTarget === ':parent' ) ? this.element.parent() : $( o.appendTarget );
+            
+
             //grab the ths and the handles and bind them 
             el.delegate(o.items, 'mousedown.' + self.widgetEventPrefix, function(e){
                 
                 var $handle = $(this),
-                elementOffsetTop = self.element.position().top;
+                    elementOffsetTop = self.element.position().top;
 
                 //make sure we are working with a th instead of a handle
                 if( $handle.hasClass( o.handle ) ){
@@ -151,10 +156,10 @@
 
                 $( document ).bind('mousemove.' + self.widgetEventPrefix, function( e ){
                     var columnPos = self._setCurrentColumnCollectionOffset(),
-                    mouseXDiff = e.pageX - prevMouseX,
-                    appendTarget = o.appendTarget[0],
-                    left =  ( parseInt( self.dragDisplay[0].style.left ) + mouseXDiff  );
-                    self.dragDisplay.css( 'left', left )
+                        mouseXDiff = e.pageX - prevMouseX,
+                        appendTarget = o.appendTarget[0],
+                        left =  ( parseInt( self.dragDisplay[0].style.left ) + mouseXDiff  );
+                        self.dragDisplay.css( 'left', left )
                     
                /*
                 * when moving left and e.pageX and prevMouseX are the same it will trigger right when moving left
@@ -326,12 +331,15 @@
          */
          _getElementAttributes: function(element){
             
-            var attrsString = '',
-            attrs = element.attributes;
-            for(var i=0, length = attrs.length; i < length; i++) {
-                attrsString += attrs[i].nodeName + '="' + attrs[i].nodeValue+'"';
+            var attrsString = [],
+                attrs = element.attributes;
+                i = 0,
+                length = attrs.length;
+
+            for( ; i < length; i++) {
+                attrsString.push( attrs[i].nodeName + '="' + attrs[i].value+'"' );
             }
-            return attrsString;
+            return attrsString.join(' ');
         },
 
         /*
@@ -370,10 +378,7 @@
         getCol: function(index){
             //console.log('index of col '+index);
             //drag display is just simple html
-            //console.profile('selectCol');
             
-            //colHeader.addClass('ui-state-disabled')
-
             var target, 
                 cells,
                 clone,
@@ -515,9 +520,9 @@
          */
          order: function(order){
             var self = this,
-            elem = self.element,
-            options = self.options,
-            headers = elem.find('thead tr:first').children('th');
+                elem = self.element,
+                options = self.options,
+                headers = elem.find('thead tr:first').children('th');
             
             
             if(order == undefined){
@@ -563,7 +568,7 @@
         
         destroy: function() {
             var self = this,
-            o = self.options;
+                o = self.options;
             
             this.element.undelegate( o.items, 'mousedown.' + self.widgetEventPrefix );
             
