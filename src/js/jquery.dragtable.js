@@ -29,7 +29,7 @@
  * start - when the user mouses down on handle or th, use in favor of display helper
  * beforechagne - called when a col will be moved
  * change - called after the col has been moved
- * stop - after the user mouses up and stops dragging
+ * stop - the user mouses up and stops dragging and the drag display is removed from the dom
  * 
  * 
  * 
@@ -240,16 +240,20 @@
                     
                 },
                 _stop: function( e ){
+                    
+                    // issue #25 reorder the stop event order always remove the stop event 
+                    $( document )
+                        .unbind( 'mousemove.' + this.widgetEventPrefix )
+                        .enableSelection()
+                        .css( 'cursor', '');
 
-                    if( this._eventHelper('stop',e,{}) == true ){
-                       $( document )
-                       .unbind( 'mousemove.' + this.widgetEventPrefix )
-                       .enableSelection()
-                       .css( 'cursor', 'move')
-                       
-                       this.dropCol();
-                       this.dragDisplay.remove()
-                   };  
+                    // clean up
+                    this
+                        .dropCol()
+                        .dragDisplay.remove();
+                    // let the world know we have stopped
+                    this._eventHelper('stop',e,{});
+
                    
                },
                
@@ -513,6 +517,7 @@
                 td.className = td.className.replace(regex,'')
             }
             
+            return this;
 
         },
         /*
