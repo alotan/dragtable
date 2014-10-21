@@ -336,7 +336,7 @@
          _getElementAttributes: function(element){
             
             var attrsString = [],
-                attrs = element.attributes;
+                attrs = element.attributes,
                 i = 0,
                 length = attrs.length;
 
