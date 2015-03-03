@@ -27,7 +27,7 @@
  * 
  * Events - in order of trigger
  * start - when the user mouses down on handle or th, use in favor of display helper
- * beforechagne - called when a col will be moved
+ * beforeChange - called when a col will be moved
  * change - called after the col has been moved
  * stop - the user mouses up and stops dragging and the drag display is removed from the dom
  * 
@@ -476,7 +476,7 @@
                 return false;
             }
             
-            if( this._eventHelper('breforechange',{}) === false ){
+            if( this._eventHelper('beforeChange',{}) === false ){
                 return false;
             };
             
