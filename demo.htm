@@ -82,6 +82,10 @@ tfoot td{
         <p>As you may have noticed there are some bugs. So consider this a beta release =)</p>
 <script type="text/javascript">
 $(document).ready(function(){
+
+	$( document.body ).on( 'dragtablestop', 'table', function( e,ui ) {
+		console.log( 'stop', e, ui )
+	} )
 $('table').each(function(){
 	
 		$(this).dragtable({

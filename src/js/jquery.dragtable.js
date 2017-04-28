@@ -26,10 +26,10 @@
  * 
  * 
  * Events - in order of trigger
- * start - when the user mouses down on handle or th, use in favor of display helper
- * beforeChange - called when a col will be moved
- * change - called after the col has been moved
- * stop - the user mouses up and stops dragging and the drag display is removed from the dom
+ * dragtablestart - when the user mouses down on handle or th, use in favor of display helper
+ * dragtablebeforeChange - called when a col will be moved
+ * dragtablechange - called after the col has been moved
+ * dragtablestop - the user mouses up and stops dragging and the drag display is removed from the dom
  * 
  * 
  * 
@@ -41,8 +41,9 @@
 
  (function($) {
   $.widget("jb.dragtable", {
-        //TODO: implement this
+
         eventWidgetPrefix: 'dragtable',
+
         options: {
             //used to the col headers, data contained in here is used to set / get the name of the col
             dataHeader:'data-header',
@@ -358,6 +359,7 @@
          * used to trigger optional events
          */
          _eventHelper: function(eventName ,eventObj, additionalData){
+
             return this._trigger( 
                 eventName, 
                 eventObj, 
@@ -371,6 +373,11 @@
                 },additionalData)
                 );
         },
+
+
+
+
+
         /*
          * build copy of table and attach the selected col to it, also removes the select col out of the table
          * @returns copy of table with the selected col
