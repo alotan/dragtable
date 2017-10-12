@@ -1,0 +1,23 @@
+{
+  "name": "dragtable",
+  "version": "1.0.0",
+  "description": "re-order table columns by using drag'n'drop",
+  "main": "dragtable_test.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jebaird/dragtable.git"
+  },
+  "keywords": [
+    "drag",
+    "table"
+  ],
+  "author": "Jesse Baird <jebaird@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jebaird/dragtable/issues"
+  },
+  "homepage": "https://github.com/jebaird/dragtable#readme"
+}
