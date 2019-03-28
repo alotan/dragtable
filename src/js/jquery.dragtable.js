@@ -6,8 +6,7 @@
  * 12/2/2010
  * https://github.com/jebaird/dragtable
  * 
- * Dual licensed under the MIT (MIT-LICENSE.txt)
- * and GPL (GPL-LICENSE.txt) licenses.
+ * Licensed under the MIT (LICENSE.txt)
  * 
  * 
  * 
